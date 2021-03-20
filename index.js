@@ -231,6 +231,7 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/yuyang', (req, res) => res.render('pages/yuyang'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
