@@ -1,0 +1,19 @@
+#title {
+  background-color: orange;
+  font-size: large;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+}
+
+#navigation {
+  float: right;
+  width: 20%;
+}
+
+#text {
+  height: 500px;
+  width: 100%;
+  overflow: scroll;
+}
