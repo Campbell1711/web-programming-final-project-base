@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link href="searchresults.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Online Library Catalog</title>
+    <body>
+        <header>
+            <a href="ryan">
+                <div id="homebutton">
+                    <p>Online Library Catalog</p>
+                </div>
+            </a>
+            <form>
+                <input type="text" name="query" id="query" placeholder="Type your search criteria">
+                <select name="searchtype" id="searchtype">
+                    <option value="content">Content</option>
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="tags">Tags</option>
+                </select>
+                <input type="submit" value="Search">
+            </form>
+        </header>
+        <p>~1,500 Results</p>
+        <div>
+            <div class="result">
+                <p class="resulttitle"><a href="ryan"><u>Document Title</u></a></p>
+                <p class="resultauthor">Author: <a href="ryan"><u>Ryan Campbell</u></a></p>
+                <p>
+                    This is a snippet from the document, ideally highlighting text that is related to
+                    the query made if it was a content-based query. The document title will link to a
+                    page where the document can be viewed. The document author will link to a search
+                    results page, searching for documents with that same author. The tags will link to
+                    a search based on that tag.
+                </p>
+                <p>
+                    Tags:
+                    <a href="ryan"><u>Biography</u></a>,
+                    <a href="ryan"><u>en_US</u></a>,
+                    <a href="ryan"><u>Mystery</u></a>,
+                    <a href="ryan"><u>Romance</u></a>
+                </p>
+            </div>
+            <div class="result">
+                <p class="resulttitle"><a href="ryan"><u>Example Document</u></a></p>
+                <p class="resultauthor">Author: <a href="ryan"><u>Ryan Campbell</u></a></p>
+                <p>
+                    This is a snippet from the document, ideally highlighting text that is related to
+                    the query made if it was a content-based query. The document title will link to a
+                    page where the document can be viewed. The document author will link to a search
+                    results page, searching for documents with that same author. The tags will link to
+                    a search based on that tag.
+                </p>
+                <p>
+                    Tags:
+                    <a href="ryan"><u>Biography</u></a>,
+                    <a href="ryan"><u>en_US</u></a>,
+                    <a href="ryan"><u>Mystery</u></a>,
+                    <a href="ryan"><u>Romance</u></a>
+                </p>
+            </div>
+        </div>
+        <div id="showmore">
+            <p>Show More</p>
+        </div>
+    </body>
+</html>

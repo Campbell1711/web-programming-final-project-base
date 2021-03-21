@@ -1,0 +1,64 @@
+body {
+    width: 1200pt;
+}
+header {
+    height: 65pt;
+}
+#homebutton {
+    background-color: lightcoral;
+    display: inline-block;
+    text-align: center;
+    width: 65pt;
+    height: 65pt;
+    color: white;
+    border-radius: 5%;
+}
+header form {
+    width: 54%;
+    height: 100%;
+    float: right;
+    display: flex;
+    align-items: center;
+    margin-right: 40%;
+}
+form input[type=text] {
+    height: 35%;
+    width: 60%;
+}
+form select {
+    height: 42%;
+    width: 15%;
+}
+form input[type=submit] {
+    height: 42%;
+    width: 15%;
+    background-color: lightcoral;
+    color: white;
+}
+body > p {
+    width: 50%;
+    margin-left: 65pt;
+}
+.result {
+    width: 50%;
+    margin-left: 65pt;
+}
+.result .resulttitle {
+    width: 50%;
+    float: left;
+}
+.result .resultauthor {
+    width: 50%;
+    float: right;
+    text-align: right;
+}
+#showmore {
+    color: white;
+    background-color: lightcoral;
+    margin-left: 65pt;
+    height: 40pt;
+    width: 80pt;
+    text-align: center;
+    border-radius: 5%;
+    display: inline-block;
+}
