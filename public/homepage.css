@@ -1,0 +1,45 @@
+body {
+    width: 1000pt;
+}
+
+h1 {
+    text-align: center;
+    background-color: lightcoral;
+    height: 15%;
+}
+
+form {
+    width: 70%;
+    float: left;
+    display: flex;
+    align-items: center;
+    margin-right: 20%;
+}
+
+form input[type=text] {
+    height: 42%;
+    width: 60%;
+}
+
+form select {
+    height: 42%;
+    width: 15%;
+}
+
+form input[type=submit] {
+    height: 42%;
+    width: 15%;
+    background-color: lightcoral;
+    color: white;
+}
+
+.navigatemenu {
+    float: right;
+    width: 15%;
+    border-width: medium;
+    background-color: lightcoral;
+}
+
+.navigatemenu h2 {
+    text-align: center;
+}
