@@ -3,25 +3,7 @@
   <meta charset="UTF-8">
   <head>
     <title>Online Library Catalog --- Upload</title>
-    <style>
-      #title {
-        background-color: pink;
-        font-size: large;
-        text-align: center;
-        height: 50px;
-        line-height: 50px;
-        width: 100%;
-      }
-      #navigation {
-        float: right;
-        width: 20%;
-      }
-      #text {
-        height: 500px;
-        width: 100%;
-        overflow: scroll;
-      }
-    </style>
+    <link href="documentUpload.css" rel="stylesheet">
   </head>
   <body>
     <div id="title"><b>Online Library Catalog</b></div>
@@ -34,24 +16,26 @@
         </ul>
       </p>
     </div>
-    <p>
     <div>
-      <label for="textTitle">Title:</label>
-      <input type="text" id="textTitle" name="textTitle" placeholder="Enter the title.">
+      <p>
+        <div>
+          <label for="textTitle">Title:</label>
+          <input type="text" id="textTitle" name="textTitle" placeholder="Enter the title.">
+        </div>
+        <div>
+          <label for="author">Author:</label>
+          <input type="text" id="author" name="author" placeholder="Last name, first name.">
+        </div>
+        <div>
+          <label for="tags">Tags:</label>
+          <input type="tags" id="tags" name="tags" placeholder="Please separate the tags by a comma." size="100px">
+        </div>
+      </p>
     </div>
-    <div>
-      <label for="author">Author:</label>
-      <input type="text" id="author" name="author" placeholder="Last name, first name.">
-    </div>
-    <div>
-      <label for="tags">Tags:</label>
-      <input type="tags" id="tags" name="tags" placeholder="Please separate the tags by a comma." size="100px">
-    </div>
-    </p>
     <div>
       <label for="text">Text:</label>
       <textarea id="text" name="text"></textarea>
     </div>
-    <button>Submit</button>
+    <div><button>Submit</button></div>
   </body>
 </html>
