@@ -2,10 +2,10 @@
 <html lang="en">
   <meta charset="UTF-8">
   <head>
-    <title>Online Library Catalog --- Display</title>
+    <title>Online Library Catalog --- Upload</title>
     <style>
       #title {
-        background-color: orange;
+        background-color: pink;
         font-size: large;
         text-align: center;
         height: 50px;
@@ -24,34 +24,34 @@
     </style>
   </head>
   <body>
-    <div id="title"><b>Online Library Catalog --- Display</b></div>
+    <div id="title"><b>Online Library Catalog</b></div>
     <div id="navigation">
       <p>
         <ul>
-          <li>Library</li>
-          <li>Search</li>
+          <li><a href="ryan">Library</a></li>
+          <li><a href="shivangi">Search</a></li>
           <li>Upload</li>
         </ul>
       </p>
     </div>
+    <p>
     <div>
-      <p>
-        <table>
-          <tr>
-            <th>Title:</th>
-            <td><i>Title</i>.</td>
-          </tr>
-          <tr>
-            <th>Author:</th>
-            <td>Last Name, First Name.</td>
-          </tr>
-          <tr>
-            <th>Tags:</th>
-            <td>Tags.</td>
-          </tr>
-        </table>
-      </p>
+      <label for="textTitle">Title:</label>
+      <input type="text" id="textTitle" name="textTitle" placeholder="Enter the title.">
     </div>
-    <div><textarea id="text"></textarea></div>
+    <div>
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" placeholder="Last name, first name.">
+    </div>
+    <div>
+      <label for="tags">Tags:</label>
+      <input type="tags" id="tags" name="tags" placeholder="Please separate the tags by a comma." size="100px">
+    </div>
+    </p>
+    <div>
+      <label for="text">Text:</label>
+      <textarea id="text" name="text"></textarea>
+    </div>
+    <button>Submit</button>
   </body>
 </html>
