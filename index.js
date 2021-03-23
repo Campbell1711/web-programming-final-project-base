@@ -257,43 +257,12 @@ express()
     }
 })
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // /db is a debugging view into the complete order_table database table
-  .get('/db', async (req, res) => {
-    try {
-      const client = await pool.connect();
-      const result = await client.query('SELECT * FROM order_table');
-      const results = { 'results': (result) ? result.rows : null};
-      res.render('pages/db', results );
-      client.release();
-    } catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
-
   .get('/yuyang', (req, res) => res.render('pages/yuyang'))
   .get('/ryan', (req,res) => res.render('pages/ryan'))
   .get('/jurgen', (req, res) => res.render('pages/jurgen'))
+  .get('/shivangi', (req, res) => res.render('pages/shivangi'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-=======
-=======
->>>>>>> a1f96366ccb8fd5b4776329708091299b22e4b6e
->>>>>>> Stashed changes
-.get('/yuyang', (req, res) => res.render('pages/yuyang'))
-    .get('/ryan', (req, res) => res.render('pages/ryan'))
-    .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
->>>>>>> a1f96366ccb8fd5b4776329708091299b22e4b6e
-=======
->>>>>>> a1f96366ccb8fd5b4776329708091299b22e4b6e
->>>>>>> Stashed changes
+    
 
 
 /*  HELPER FUNCTIONS BELOW 
