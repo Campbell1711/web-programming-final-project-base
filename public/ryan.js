@@ -31,7 +31,7 @@ function requestMoreResults() {
 
 // Handle display of fetched documents on click of "Show More" button
 function responseHandler() {
-    if (this.status === 200) {
+    if (this.status === 200 && this.response.length > 0) {
         for (let i = 0; i < this.response.length; ++i) {
             let response = this.response[i];
             // Create result div
