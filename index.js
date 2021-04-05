@@ -258,7 +258,7 @@ express()
 })
 
   .get('/yuyang', (req, res) => res.render('pages/yuyang'))
-  .get('/ryan', (req,res) => res.render('pages/ryan'))
+  .get('/ryan', handleSearchRequest)
   .get('/jurgen', (req, res) => res.render('pages/jurgen'))
   .get('/shivangi', (req, res) => res.render('pages/shivangi'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
@@ -267,6 +267,23 @@ express()
 
 /*  HELPER FUNCTIONS BELOW 
  */
+
+// Server side processing of requests to search results page
+let validSearchTypes = new Set(["content","title","author","tags"]);
+function handleSearchRequest(req, res) {
+    // TODO, use query, searchtype, and query position to fetch real documents
+    if (req.query.queryposition && req.query.query && req.query.searchtype && validSearchTypes.has(req.query.searchtype)) { // Sends a block of results if possible
+        let pos = req.query.queryposition; // Position in search results (Number of times Show More was pressed)
+        let newResults = []
+        let lastPos = pos * 8 + 8; // Last query to return
+        for (let i = pos * 8; i < lastPos; ++i) {
+            newResults.push({title: `Book ${i}`, docanchor: "jurgen", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
+        }
+        res.json(newResults);
+    } else {
+        res.render('pages/ryan'); // Sends page without results
+    }
+}
 
 // server side validation for the menu page submissions
 function validateMenu(first_name, last_name, entree, sideList) {
