@@ -272,9 +272,9 @@ express()
 let validSearchTypes = new Set(["content","title","author","tags"]);
 function handleSearchRequest(req, res) {
     // TODO, use query, searchtype, and query position to fetch real documents
-    if (req.query.queryposition) { // Sends a block of results if possible
+    let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
+    if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
         if (req.query.query && req.query.searchtype && validSearchTypes.has(req.query.searchtype)) {
-            let pos = req.query.queryposition; // Position in search results (Number of times Show More was pressed)
             let newResults = []
             let lastPos = pos * 8 + 8; // Last query to return
             for (let i = pos * 8; i < lastPos; ++i) {
