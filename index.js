@@ -298,6 +298,7 @@ function handleDocument(req, res) {
     } else {
         res.json({has: false})
     }
+    res.render('pages/ryan');
 }
 
 // server side validation for the menu page submissions
