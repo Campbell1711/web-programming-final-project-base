@@ -258,6 +258,20 @@ express()
 })
 
   .get('/yuyang', (req, res) => res.render('pages/yuyang'))
+  .post('/yuyang', (req, res) => {
+      if (req.body.textTitle && (req.body.author && (req.body.tags && req.body.text))) {
+        let textTitle = req.body.textTitle
+        let author = req.body.author
+        let tags = req.body.tags
+        let text = req.body.text
+        res.send("ok")
+        res.end()
+      } else {
+          res.send("fail")
+          res.end()
+      }
+      
+  })
   .get('/ryan', handleSearchRequest)
   .get('/jurgen', handleDocument)
   .get('/shivangi', (req, res) => res.render('pages/shivangi'))

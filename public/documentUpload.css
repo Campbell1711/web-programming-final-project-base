@@ -17,3 +17,13 @@
   width: 100%;
   overflow: scroll;
 }
+
+.meta-warning {
+  color: red;
+  display: block;
+}
+
+.text-warning {
+  color: red;
+  display: block;
+}
