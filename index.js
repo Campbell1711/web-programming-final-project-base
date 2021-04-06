@@ -278,7 +278,7 @@ function handleSearchRequest(req, res) {
             let newResults = []
             let lastPos = pos * 8 + 8; // Last query to return
             for (let i = pos * 8; i < lastPos; ++i) {
-                newResults.push({title: `Book ${i}`, docanchor: "jurgen", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
+                newResults.push({title: `Book ${i}`, docanchor: "jurgen?file=12345678", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
             }
             res.json(newResults);
         } else {
