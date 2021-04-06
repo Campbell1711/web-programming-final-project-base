@@ -259,7 +259,7 @@ express()
 
   .get('/yuyang', (req, res) => res.render('pages/yuyang'))
   .get('/ryan', handleSearchRequest)
-  .get('/jurgen', handleDocument)
+  .get('/jurgen', (req, res) => res.render('pages/jurgen'))
   .get('/shivangi', (req, res) => res.render('pages/shivangi'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
     
@@ -286,17 +286,6 @@ function handleSearchRequest(req, res) {
         }
     } else {
         res.render('pages/ryan'); // Sends page without results
-    }
-}
-
-function handleDocument(req, res) {
-    if(req.query.file) {
-        res.json({has: true,
-            title: 'Lorem Ipsum',
-        author: '"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."',
-        content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut orci porttitor, sodales enim sed, interdum nisl. Integer condimentum auctor augue. Fusce gravida iaculis augue, ac facilisis mauris fermentum bibendum. Curabitur malesuada aliquet fringilla. Integer eget posuere justo. In sagittis, libero quis cursus interdum, nibh ante facilisis nibh, eget consequat nunc quam at augue. Nam molestie enim nec metus tempor accumsan. Etiam posuere, odio vel gravida varius, ante massa mattis sapien, quis consectetur purus nulla ac nunc. Fusce scelerisque consequat lorem, volutpat gravida ex viverra in. Aenean aliquet quam accumsan tincidunt ullamcorper. Aliquam ullamcorper est quis turpis fermentum viverra. Sed at bibendum ipsum. Sed posuere, dui quis blandit imperdiet, nibh ex condimentum dolor, vitae laoreet tortor risus ut ante. Cras rutrum in felis at accumsan.']})
-    } else {
-        res.json({has: false})
     }
 }
 
