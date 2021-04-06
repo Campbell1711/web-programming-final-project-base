@@ -292,7 +292,7 @@ function handleSearchRequest(req, res) {
             let newResults = []
             let lastPos = pos * 8 + 8; // Last query to return
             for (let i = pos * 8; i < lastPos; ++i) {
-                newResults.push({title: `Book ${i}`, docanchor: "jurgen", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
+                newResults.push({title: `Book ${i}`, docanchor: "jurgen?file=12345678", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
             }
             res.json(newResults);
         } else {
@@ -304,15 +304,18 @@ function handleSearchRequest(req, res) {
 }
 
 function handleDocument(req, res) {
-    if(req.query.file) {
-        res.json({has: true,
-            title: 'Lorem Ipsum',
-        author: '"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."',
-        content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut orci porttitor, sodales enim sed, interdum nisl. Integer condimentum auctor augue. Fusce gravida iaculis augue, ac facilisis mauris fermentum bibendum. Curabitur malesuada aliquet fringilla. Integer eget posuere justo. In sagittis, libero quis cursus interdum, nibh ante facilisis nibh, eget consequat nunc quam at augue. Nam molestie enim nec metus tempor accumsan. Etiam posuere, odio vel gravida varius, ante massa mattis sapien, quis consectetur purus nulla ac nunc. Fusce scelerisque consequat lorem, volutpat gravida ex viverra in. Aenean aliquet quam accumsan tincidunt ullamcorper. Aliquam ullamcorper est quis turpis fermentum viverra. Sed at bibendum ipsum. Sed posuere, dui quis blandit imperdiet, nibh ex condimentum dolor, vitae laoreet tortor risus ut ante. Cras rutrum in felis at accumsan.']})
+    if (req.query.getjson) {
+        if(req.query.file) {
+            res.json({has: true,
+                title: 'Lorem Ipsum',
+            author: '"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."',
+            content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut orci porttitor, sodales enim sed, interdum nisl. Integer condimentum auctor augue. Fusce gravida iaculis augue, ac facilisis mauris fermentum bibendum. Curabitur malesuada aliquet fringilla. Integer eget posuere justo. In sagittis, libero quis cursus interdum, nibh ante facilisis nibh, eget consequat nunc quam at augue. Nam molestie enim nec metus tempor accumsan. Etiam posuere, odio vel gravida varius, ante massa mattis sapien, quis consectetur purus nulla ac nunc. Fusce scelerisque consequat lorem, volutpat gravida ex viverra in. Aenean aliquet quam accumsan tincidunt ullamcorper. Aliquam ullamcorper est quis turpis fermentum viverra. Sed at bibendum ipsum. Sed posuere, dui quis blandit imperdiet, nibh ex condimentum dolor, vitae laoreet tortor risus ut ante. Cras rutrum in felis at accumsan.']})
+        } else {
+            res.json({has: false})
+        }
     } else {
-        res.json({has: false})
+        res.render('pages/jurgen');
     }
-    res.render('pages/jurgen');
 }
 
 // server side validation for the menu page submissions
