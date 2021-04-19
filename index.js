@@ -1,9 +1,11 @@
 const express = require('express')
+const fs = require('fs')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 const { Pool } = require('pg');
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    // This Line is modified so that in local development you can successfully manipulate database without pushing the app to server and avoid ssl error message.
+    connectionString: process.env.DATABASE_URL || 'postgres://ueqfdtqkugawmi:bcb9106b88d1895b855fb7a88c1ad68e8e66fe297050ebec63e3dea7dfd68929@ec2-34-206-8-52.compute-1.amazonaws.com:5432/d9v0qal1g956n1',
     ssl: {
         rejectUnauthorized: false
     }
@@ -265,16 +267,32 @@ express()
         let text = req.body.text
         res.send("ok")
         res.end()
-        } else {
-            res.send("fail")
-            res.end()
-        }
-        
+      } else {
+          res.send("fail")
+          res.end()
+      }
+      
+  })
+  .get('/ryan', handleSearchRequest)
+  .get('/jurgen', function (req, res) {
+      let noPage = -1;
+      res.render('pages/jurgen', {noPage: true})
     })
-    .get('/ryan', handleSearchRequest)
-    .get('/jurgen', handleDocument)
-    .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+  .get('/jurgen/:docId', async function (req, res) {
+      let docId = req.params.docId;
+      try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM non_content_table');
+        const results = { 'results': (result) ? result.rows : null, noPage: false };
+        res.render('pages/jurgen', results);
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+  })
+  .get('/shivangi', (req, res) => res.render('pages/shivangi'))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
     
 
 
@@ -284,7 +302,7 @@ express()
 // Server side processing of requests to search results page
 let validSearchTypes = new Set(["content","title","author","tags"]);
 let validTags = new Set(["tag_english", "tag_short", "tag_med", "tag_long"]);
-function handleSearchRequest(req, res) {
+async function handleSearchRequest(req, res) {
     // TODO, use query, searchtype, and query position to fetch real documents
     let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
     if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
@@ -310,6 +328,12 @@ function handleSearchRequest(req, res) {
                     const client = await pool.connect();
                     const result = await client.query(SQLQueryString);
                     const results = { 'results': (result) ? result.rows : null };
+                    // Get the snippets
+                    for (let i = 0; i < result.rows.length; ++i) {
+                        let docId = result.rows[i].doc_id;
+                        let snippetText = fs.readFileSync(`./documents/snippets/${docId}.txt`, 'utf8').toString();
+                        result.rows[i]['snippet'] = snippetText;
+                    }
                     res.json(results);
                     client.release();
                 } catch (err) {
@@ -319,11 +343,6 @@ function handleSearchRequest(req, res) {
             } else {
                 res.json([]);
             }
-            // let newResults = getSearchResults()
-            // for (let i = pos * 8; i < lastPos; ++i) {
-            //     newResults.push({title: `Book ${i}`, docanchor: "jurgen?file=12345678", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
-            // }
-            // res.json(newResults);
         } else {
             res.json([]); // Query wasn't valid, no search results
         }
