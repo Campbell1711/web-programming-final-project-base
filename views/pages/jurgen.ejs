@@ -1,59 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<link href="documentView.css" rel="stylesheet">
-<script src="documentView.js" defer></script>
 <meta charset="UTF-8">
-<title>Online Library Catalog - Ducument View(Title Here)</title>
+
+<head>
+    <base href="/">
+    <link href="documentView.css" rel="stylesheet">
+    <!-- <script src="documentView.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <title>Online Library Catalog - Ducument</title>
+</head>
+
 
 <body>
-    <div class='nav-bar'>
-        <h1 class='nav-bar-title'>Online Library Catalog - Ducument View(Title Here)</h1>
-    </div>
-    <div class="body-container">
-        <div class="content-container">
-            <div id='bioContainer' class="bio-container">
-                <div id='titleCorneredBox' class='bio-cornered-box'>
-                    <p id='title' class='bio-text'>Lorem Ipsum</p>
+    <% if(noPage) { %> 
+        <h1>404 - File not found / specified</h1>
+    <% } else {%>
+        <div class='nav-bar'>
+            <h1 class='nav-bar-title'>Ducument: <%= results.scene_title %> </h1>
+        </div>
+        <div class="body-container">
+            <div class="content-container">
+                <div id='bioContainer' class="bio-container">
+                    <div id='titleCorneredBox' class='bio-cornered-box'>
+                        <p id='title' class='bio-text'><%= results.scene_title %></p>
+                    </div>
+                    <div id='authorCorneredBox' class='bio-cornered-box'>
+                        <p id='author' class='bio-text'><%= results.play_title %></p>
+                    </div>
                 </div>
-                <div id='authorCorneredBox' class='bio-cornered-box'>
-                    <p id='author' class='bio-text'>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
-                        consectetur, adipisci velit..."</p>
+                <div id='docTextContainer' class='doc-text-container'>
+                    <% text.forEach(p => { %>
+                        <p><%= p %> </p>
+                    <% }) %>
+                </div>
+                <div id='docTagsContainer' class='doc-tags-container'>
+                    Tags:
+                    <p>
+                        <% if (results.tag_english) { %>
+                            <a href=""><u>English</u></a>,
+                        <% } %>
+                        <% if (results.tag_short) { %>
+                            <a href=""><u>Short</u></a>,
+                        <% } %>
+                        <% if (results.tag_med) { %>
+                            <a href=""><u>Medium</u></a>,
+                        <% } %>
+                        <% if (results.tag_long) { %>
+                            <a href=""><u>Long</u></a>
+                        <% } %>
+                    </p>
                 </div>
             </div>
-            <div id='docTextContainer' class='doc-text-container'>
-                
-            </div>
-            <div id='docTagsContainer' class='doc-tags-container'>
-                Tags:
-                <p>
-                    <a href=""><u>Lorem ipsum</u></a>,
-                    <a href=""><u>Lorem ipsum</u></a>,
-                    <a href=""><u>Lorem ipsum</u></a>,
-                    <a href=""><u>Lorem ipsum</u></a>
-                </p>
+            <div class='side-nav-container'>
+                <a href="">
+                    <div class="home-button">
+                        <p>Online Library Catalog</p>
+                    </div>
+                </a>
+                <div class='links-container'>
+                    <ul>
+                        <li>
+                            <a href="shivangi"> Search </a>
+                        </li>
+                        <li>
+                            <a href="ryan"> Library </a>
+                        </li>
+                        <li>
+                            <a href="yuyang"> Upload Documents</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class='side-nav-container'>
-            <a href="" >
-                <div class="home-button">
-                    <p>Online Library Catalog</p>
-                </div>
-            </a>
-            <div class='links-container'>
-                <ul>
-                    <li>
-                        <a href="shivangi"> Search </a>
-                    </li>
-                    <li>
-                        <a href="ryan"> Library </a>
-                    </li>
-                    <li>
-                        <a href="yuyang"> Upload Documents</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <% } %>  
 </body>
 
 </html>

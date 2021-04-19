@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 const { Pool } = require('pg');
+const fs = require('fs')
 const pool = new Pool({
     // This Line is modified so that in local development you can successfully manipulate database without pushing the app to server and avoid ssl error message.
     connectionString: process.env.DATABASE_URL || 'postgres://ueqfdtqkugawmi:bcb9106b88d1895b855fb7a88c1ad68e8e66fe297050ebec63e3dea7dfd68929@ec2-34-206-8-52.compute-1.amazonaws.com:5432/d9v0qal1g956n1',
@@ -282,8 +283,9 @@ express()
       let docId = req.params.docId;
       try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM non_content_table');
-        const results = { 'results': (result) ? result.rows : null, noPage: false };
+        const result = await client.query(`SELECT * FROM non_content_table where doc_id = ${docId}`);
+        let text = fs.readFileSync(path.join(__dirname, "documents/full/test.txt"), {encoding:'utf8', flag:'r'}).split("\n");
+        const results = { 'results': (result) ? result.rows[0] : null, noPage: false, text: text };
         res.render('pages/jurgen', results);
         client.release();
     } catch (err) {
@@ -348,21 +350,6 @@ async function handleSearchRequest(req, res) {
         }
     } else {
         res.render('pages/ryan'); // Sends page without results
-    }
-}
-
-function handleDocument(req, res) {
-    if (req.query.getjson) {
-        if(req.query.file) {
-            res.json({has: true,
-                title: 'Lorem Ipsum',
-            author: '"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."',
-            content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut orci porttitor, sodales enim sed, interdum nisl. Integer condimentum auctor augue. Fusce gravida iaculis augue, ac facilisis mauris fermentum bibendum. Curabitur malesuada aliquet fringilla. Integer eget posuere justo. In sagittis, libero quis cursus interdum, nibh ante facilisis nibh, eget consequat nunc quam at augue. Nam molestie enim nec metus tempor accumsan. Etiam posuere, odio vel gravida varius, ante massa mattis sapien, quis consectetur purus nulla ac nunc. Fusce scelerisque consequat lorem, volutpat gravida ex viverra in. Aenean aliquet quam accumsan tincidunt ullamcorper. Aliquam ullamcorper est quis turpis fermentum viverra. Sed at bibendum ipsum. Sed posuere, dui quis blandit imperdiet, nibh ex condimentum dolor, vitae laoreet tortor risus ut ante. Cras rutrum in felis at accumsan.']})
-        } else {
-            res.json({has: false})
-        }
-    } else {
-        res.render('pages/jurgen');
     }
 }
 
