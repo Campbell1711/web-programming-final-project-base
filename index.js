@@ -300,6 +300,55 @@ express()
 /*  HELPER FUNCTIONS BELOW 
  */
 
+function termSetFromDocId(docId) {
+    // Return set of tokens in document with id docId
+    //console.log("yeet5");
+    return new Set(fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), 'utf8').toString().split(" "));
+}
+
+function includeSnippets(result) {
+    try {
+        // Get the snippets
+        for (let i = 0; i < result.rows.length; ++i) {
+            let docId = result.rows[i].doc_id;
+            let snippetText = fs.readFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), 'utf8').toString();
+            result.rows[i]['snippet'] = snippetText;
+        }
+    } catch(err) {
+        console.error(err);
+    }
+}
+
+async function handleContentSearch(req, res) {
+    let pos = parseInt(req.query.queryposition); // Position in search results
+    let queryTokens = req.query.query.split(" "); // Split on whitespace
+    let lastDocId = 0;
+    let returned_rows = [];
+    ++pos; // Only consider documents after this position
+    try {
+        const client = await pool.connect();
+        // Get length of table / max document id
+        const result = await client.query("SELECT count(*) FROM non_content_table");
+        lastDocId = result.rows ? result.rows[0].count : 0;
+        while ((pos <= lastDocId) && (returned_rows.length < 8)) {
+            let docTokens = termSetFromDocId(pos); // Check if document contains all tokens
+            for (let i = 0; i < queryTokens.length; ++i) {
+                if (docTokens.has(queryTokens[i])) {
+                    let row = await client.query(`SELECT * FROM non_content_table where doc_id = ${pos}`);
+                    row = row ? row.rows[0] : null;
+                    returned_rows.push(row);
+                }
+            }
+            ++pos;
+        }
+        includeSnippets({'rows': returned_rows});
+        res.json({'results': returned_rows});
+        client.release();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // Server side processing of requests to search results page
 let validSearchTypes = new Set(["content","scene","play","tags"]);
 let validTags = new Set(["tag_english", "tag_short", "tag_med", "tag_long"]);
@@ -312,8 +361,7 @@ async function handleSearchRequest(req, res) {
             let SQLQueryString;
             let validQuery = true;
             if (req.query.searchtype === "content") {
-                validQuery = false;
-                SQLQueryString = `SELECT * from content_table OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
+                handleContentSearch(req, res);
             } else if (req.query.searchtype === "scene") {
                 SQLQueryString = `SELECT * FROM non_content_table WHERE scene_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
             } else if (req.query.searchtype === "play") {
@@ -325,25 +373,22 @@ async function handleSearchRequest(req, res) {
                     validQuery = false;
                 }
             }
-            if (validQuery) {
-                try {
-                    const client = await pool.connect();
-                    const result = await client.query(SQLQueryString);
-                    const results = { 'results': (result) ? result.rows : null };
-                    // Get the snippets
-                    for (let i = 0; i < result.rows.length; ++i) {
-                        let docId = result.rows[i].doc_id;
-                        let snippetText = fs.readFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), 'utf8').toString();
-                        result.rows[i]['snippet'] = snippetText;
+            if (req.query.searchtype !== "content") {
+                if (validQuery) {
+                    try {
+                        const client = await pool.connect();
+                        const result = await client.query(SQLQueryString);
+                        const results = { 'results': (result) ? result.rows : null };
+                        includeSnippets(result);
+                        res.json(results);
+                        client.release();
+                    } catch (err) {
+                        console.error(err);
+                        res.json(emptyResults);
                     }
-                    res.json(results);
-                    client.release();
-                } catch (err) {
-                    console.error(err);
+                } else {
                     res.json(emptyResults);
                 }
-            } else {
-                res.json(emptyResults);
             }
         } else {
             res.json(emptyResults); // Query wasn't valid, no search results

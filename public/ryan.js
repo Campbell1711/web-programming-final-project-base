@@ -33,6 +33,9 @@ function requestMoreResults() {
 function responseHandler() {
     if (this.status === 200 && this.response.results.length > 0) {
         let rows = this.response.results;
+        if (searchType === 'content') {
+            queryposition = rows[rows.length - 1].doc_id; // Only consider documents with greater id
+        }
         for (let i = 0; i < rows.length; ++i) {
             let response = rows[i];
             // Create result div
