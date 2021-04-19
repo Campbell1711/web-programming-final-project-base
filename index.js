@@ -331,7 +331,7 @@ async function handleContentSearch(req, res) {
         const result = await client.query("SELECT count(*) FROM non_content_table");
         lastDocId = result.rows ? result.rows[0].count : 0;
         while ((pos <= lastDocId) && (returned_rows.length < 8)) {
-            let docTokens = termSetFromDocId(pos); // Check if document contains all tokens
+            let docTokens = termSetFromDocId(pos); // Check if document contains all query tokens
             for (let i = 0; i < queryTokens.length; ++i) {
                 if (docTokens.has(queryTokens[i])) {
                     let row = await client.query(`SELECT * FROM non_content_table where doc_id = ${pos}`);
