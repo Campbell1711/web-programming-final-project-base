@@ -243,39 +243,38 @@ express()
         }
     })
 
-// /db is a debugging view into the complete order_table database table
-.get('/db', async(req, res) => {
-    try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT * FROM non_content_table');
-        const results = { 'results': (result) ? result.rows : null };
-        res.render('pages/db', results);
-        client.release();
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-})
-
-  .get('/yuyang', (req, res) => res.render('pages/yuyang'))
-  .post('/yuyang', (req, res) => {
-      if (req.body.textTitle && (req.body.author && (req.body.tags && req.body.text))) {
+    // /db is a debugging view into the complete order_table database table
+    .get('/db', async(req, res) => {
+        try {
+            const client = await pool.connect();
+            const result = await client.query('SELECT * FROM non_content_table');
+            const results = { 'results': (result) ? result.rows : null };
+            res.render('pages/db', results);
+            client.release();
+        } catch (err) {
+            console.error(err);
+            res.send("Error " + err);
+        }
+    })
+    .get('/yuyang', (req, res) => res.render('pages/yuyang'))
+    .post('/yuyang', (req, res) => {
+        if (req.body.textTitle && (req.body.author && (req.body.tags && req.body.text))) {
         let textTitle = req.body.textTitle
         let author = req.body.author
         let tags = req.body.tags
         let text = req.body.text
         res.send("ok")
         res.end()
-      } else {
-          res.send("fail")
-          res.end()
-      }
-      
-  })
-  .get('/ryan', handleSearchRequest)
-  .get('/jurgen', handleDocument)
-  .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+        } else {
+            res.send("fail")
+            res.end()
+        }
+        
+    })
+    .get('/ryan', handleSearchRequest)
+    .get('/jurgen', handleDocument)
+    .get('/shivangi', (req, res) => res.render('pages/shivangi'))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
     
 
 
@@ -284,17 +283,47 @@ express()
 
 // Server side processing of requests to search results page
 let validSearchTypes = new Set(["content","title","author","tags"]);
+let validTags = new Set(["tag_english", "tag_short", "tag_med", "tag_long"]);
 function handleSearchRequest(req, res) {
     // TODO, use query, searchtype, and query position to fetch real documents
     let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
     if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
         if (req.query.query && req.query.searchtype && validSearchTypes.has(req.query.searchtype)) {
-            let newResults = []
-            let lastPos = pos * 8 + 8; // Last query to return
-            for (let i = pos * 8; i < lastPos; ++i) {
-                newResults.push({title: `Book ${i}`, docanchor: "jurgen?file=12345678", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
+            let SQLQueryString;
+            let validQuery = true;
+            if (req.query.searchtype === "content") {
+                validQuery = false;
+                SQLQueryString = `SELECT * from content_table OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
+            } else if (req.query.searchtype === "title") {
+                SQLQueryString = `SELECT * FROM non_content_table WHERE scene_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
+            } else if (req.query.searchtype === "author") {
+                SQLQueryString = `SELECT * FROM non_content_table WHERE play_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
+            } else { // Tags
+                if (validTags.has(req.query.query)) {
+                    SQLQueryString = `SELECT * FROM non_content_table WHERE ${req.query.query} OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
+                } else {
+                    validQuery = false;
+                }
             }
-            res.json(newResults);
+            if (validQuery) {
+                try {
+                    const client = await pool.connect();
+                    const result = await client.query(SQLQueryString);
+                    const results = { 'results': (result) ? result.rows : null };
+                    res.json(results);
+                    client.release();
+                } catch (err) {
+                    console.error(err);
+                    res.json([]);
+                }
+            } else {
+                res.json([]);
+            }
+            // let newResults = getSearchResults()
+            // for (let i = pos * 8; i < lastPos; ++i) {
+            //     newResults.push({title: `Book ${i}`, docanchor: "jurgen?file=12345678", author: `Human ${i}`, snippet: "This is a snippet from this book.", tags: ["Tag 1", "Tag 2", "Tag 3"]});
+            // }
+            // res.json(newResults);
         } else {
             res.json([]); // Query wasn't valid, no search results
         }

@@ -34,6 +34,8 @@ function responseHandler() {
     if (this.status === 200 && this.response.length > 0) {
         for (let i = 0; i < this.response.length; ++i) {
             let response = this.response[i];
+            console.log(response);
+            continue;
             // Create result div
             let newResult = document.createElement("div");
             newResult.classList.add("result");
