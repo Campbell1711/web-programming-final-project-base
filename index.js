@@ -3,7 +3,8 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 const { Pool } = require('pg');
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    // This Line is modified so that in local development you can successfully manipulate database without pushing the app to server and avoid ssl error message.
+    connectionString: process.env.DATABASE_URL || 'postgres://ueqfdtqkugawmi:bcb9106b88d1895b855fb7a88c1ad68e8e66fe297050ebec63e3dea7dfd68929@ec2-34-206-8-52.compute-1.amazonaws.com:5432/d9v0qal1g956n1',
     ssl: {
         rejectUnauthorized: false
     }
@@ -273,7 +274,23 @@ express()
       
   })
   .get('/ryan', handleSearchRequest)
-  .get('/jurgen', handleDocument)
+  .get('/jurgen', function (req, res) {
+      let noPage = -1;
+      res.render('pages/jurgen', {noPage: true})
+    })
+  .get('/jurgen/:docId', async function (req, res) {
+      let docId = req.params.docId;
+      try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM non_content_table');
+        const results = { 'results': (result) ? result.rows : null, noPage: false };
+        res.render('pages/jurgen', results);
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+  })
   .get('/shivangi', (req, res) => res.render('pages/shivangi'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
     
