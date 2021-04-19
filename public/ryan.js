@@ -41,7 +41,7 @@ function responseHandler() {
             // Title
             let titleElem = document.createElement("p");
             titleElem.classList.add("resulttitle");
-            titleElem.innerHTML = `<a href="jurgen?file=${response.doc_id}"><u>${response.scene_title}</u></a>`;
+            titleElem.innerHTML = `<a href="jurgen/${response.doc_id}"><u>${response.scene_title}</u></a>`;
             newResult.appendChild(titleElem);
             // Author
             let authorElem = document.createElement("p");

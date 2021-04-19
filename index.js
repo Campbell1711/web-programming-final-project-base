@@ -1,5 +1,4 @@
 const express = require('express')
-const fs = require('fs')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 const { Pool } = require('pg');
@@ -284,7 +283,7 @@ express()
       try {
         const client = await pool.connect();
         const result = await client.query(`SELECT * FROM non_content_table where doc_id = ${docId}`);
-        let text = fs.readFileSync(path.join(__dirname, "documents/full/test.txt"), {encoding:'utf8', flag:'r'}).split("\n");
+        let text = fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), {encoding:'utf8', flag:'r'}).split("\n");
         const results = { 'results': (result) ? result.rows[0] : null, noPage: false, text: text };
         res.render('pages/jurgen', results);
         client.release();
