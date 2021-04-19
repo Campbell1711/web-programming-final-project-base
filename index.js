@@ -247,7 +247,7 @@ express()
 .get('/db', async(req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM order_table');
+        const result = await client.query('SELECT * FROM non_content_table');
         const results = { 'results': (result) ? result.rows : null };
         res.render('pages/db', results);
         client.release();
