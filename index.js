@@ -259,17 +259,33 @@ express()
         }
     })
     .get('/yuyang', (req, res) => res.render('pages/yuyang'))
-    .post('/yuyang', (req, res) => {
-        if (req.body.textTitle && (req.body.author && (req.body.tags && req.body.text))) {
-        let textTitle = req.body.textTitle
-        let author = req.body.author
-        let tags = req.body.tags
-        let text = req.body.text
-        res.send("ok")
-        res.end()
+    .post('/yuyang', async (req, res) => {
+        if (req.body.textScene && req.body.play && req.body.text) {
+            let textScene = req.body.textScene;
+            let play = req.body.play;
+            let text = req.body.text;
+            // Get length of table / max document id
+            const client = await pool.connect();
+            const result = await client.query("SELECT count(*) FROM non_content_table");
+            let docId = result.rows ? parseInt(result.rows[0].count) + 1 : 0;
+            // Original text mean and std are 6019, and 4963
+            // Short if < mean - 1 std, long if > mean + 1 std, medium otherwise
+            let short = text.length < 6019 - 4963 ? "TRUE" : "FALSE";
+            let long = text.length > 6019 + 4963 ? "TRUE" : "FALSE";
+            let med = !(short || long) ? "TRUE" : "FALSE";
+            let sqlCommand = "INSERT INTO non_content_table (doc_id, scene_title, play_title, tag_english, tag_short, tag_med, tag_long) values ";
+            sqlCommand += `(${docId}, '${textScene}', '${play}', TRUE, ${short}, ${med}, ${long})`;
+            await client.query(sqlCommand);
+            client.release();
+            // Write document text and snippet to files
+            fs.writeFileSync(path.join(__dirname, `documents/full/${docId}.txt`), text, {encoding:'utf8', flag:'w'});
+            let snippet = text.substring(0, Math.min(400, text.length));
+            fs.writeFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), snippet, {encoding:'utf8', flag:'w'});
+            res.send("ok");
+            res.end();
       } else {
-          res.send("fail")
-          res.end()
+            res.send("fail");
+            res.end();
       }
       
   })
