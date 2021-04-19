@@ -38,15 +38,15 @@ function responseHandler() {
             // Create result div
             let newResult = document.createElement("div");
             newResult.classList.add("result");
-            // Title
+            // Scene
             let titleElem = document.createElement("p");
-            titleElem.classList.add("resulttitle");
+            titleElem.classList.add("resultscene");
             titleElem.innerHTML = `<a href="jurgen/${response.doc_id}"><u>${response.scene_title}</u></a>`;
             newResult.appendChild(titleElem);
-            // Author
+            // Play
             let authorElem = document.createElement("p");
-            authorElem.classList.add("resultauthor");
-            authorElem.innerHTML = `Play: <a href="ryan?query=${response.play_title}&searchtype=author"><u>${response.play_title}</u></a>`;
+            authorElem.classList.add("resultplay");
+            authorElem.innerHTML = `Play: <a href="ryan?query=${response.play_title}&searchtype=play"><u>${response.play_title}</u></a>`;
             newResult.appendChild(authorElem);
             // Snippet
             let snippet = document.createElement("p");

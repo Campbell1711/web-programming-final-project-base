@@ -301,9 +301,10 @@ express()
  */
 
 // Server side processing of requests to search results page
-let validSearchTypes = new Set(["content","title","author","tags"]);
+let validSearchTypes = new Set(["content","scene","play","tags"]);
 let validTags = new Set(["tag_english", "tag_short", "tag_med", "tag_long"]);
 async function handleSearchRequest(req, res) {
+    let emptyResults = {'results': []};
     // TODO, use query, searchtype, and query position to fetch real documents
     let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
     if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
@@ -313,9 +314,9 @@ async function handleSearchRequest(req, res) {
             if (req.query.searchtype === "content") {
                 validQuery = false;
                 SQLQueryString = `SELECT * from content_table OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
-            } else if (req.query.searchtype === "title") {
+            } else if (req.query.searchtype === "scene") {
                 SQLQueryString = `SELECT * FROM non_content_table WHERE scene_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
-            } else if (req.query.searchtype === "author") {
+            } else if (req.query.searchtype === "play") {
                 SQLQueryString = `SELECT * FROM non_content_table WHERE play_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
             } else { // Tags
                 if (validTags.has(req.query.query)) {
@@ -332,20 +333,20 @@ async function handleSearchRequest(req, res) {
                     // Get the snippets
                     for (let i = 0; i < result.rows.length; ++i) {
                         let docId = result.rows[i].doc_id;
-                        let snippetText = fs.readFileSync(`./documents/snippets/${docId}.txt`, 'utf8').toString();
+                        let snippetText = fs.readFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), 'utf8').toString();
                         result.rows[i]['snippet'] = snippetText;
                     }
                     res.json(results);
                     client.release();
                 } catch (err) {
                     console.error(err);
-                    res.json([]);
+                    res.json(emptyResults);
                 }
             } else {
-                res.json([]);
+                res.json(emptyResults);
             }
         } else {
-            res.json([]); // Query wasn't valid, no search results
+            res.json(emptyResults); // Query wasn't valid, no search results
         }
     } else {
         res.render('pages/ryan'); // Sends page without results

@@ -52,11 +52,11 @@ body > p {
     margin-left: 65pt;
     animation: 1s linear fadein;
 }
-.result .resulttitle {
+.result .resultscene {
     width: 50%;
     float: left;
 }
-.result .resultauthor {
+.result .resultplay {
     width: 50%;
     float: right;
     text-align: right;
