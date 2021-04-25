@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link href="searchresults.css" rel="stylesheet">
-    <script src="ryan.js" defer></script>
-    <meta charset="UTF-8">
-    <title>Online Library Catalog</title>
+    <head>
+        <link href="ryan.css" rel="stylesheet">
+        <script src="ryan.js" defer></script>
+        <meta charset="UTF-8">
+        <title>OLC: Search Document</title>
+    </head>
     <body>
         <header>
             <a href="/">
@@ -15,8 +17,8 @@
                 <input type="text" name="query" id="query" placeholder="Type your search criteria">
                 <select name="searchtype" id="searchtype">
                     <option value="content">Content</option>
-                    <option value="scene">Scene</option>
-                    <option value="play">Play</option>
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
                     <option value="tags">Tags</option>
                 </select>
                 <input type="submit" value="Search">
