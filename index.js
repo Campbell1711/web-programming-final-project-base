@@ -283,38 +283,34 @@ express()
             fs.writeFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), snippet, {encoding:'utf8', flag:'w'});
             res.send("ok");
             res.end();
-      } else {
+        } else {
             res.send("fail");
             res.end();
-      }
-      
-  })
-  .get('/ryan', handleSearchRequest)
-  .get('/jurgen', function (req, res) {
-      let noPage = -1;
-      res.render('pages/jurgen', {noPage: true})
+        }
     })
-  .get('/jurgen/:docId', async function (req, res) {
-      let docId = req.params.docId;
-      try {
-        const client = await pool.connect();
-        const result = await client.query(`SELECT * FROM non_content_table where doc_id = ${docId}`);
-        let text = fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), {encoding:'utf8', flag:'r'}).split("\n");
-        const results = { 'results': (result) ? result.rows[0] : null, noPage: false, text: text };
-        res.render('pages/jurgen', results);
-        client.release();
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    }
-  })
-  .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-    
+    .get('/ryan', handleSearchRequest)
+    .get('/jurgen', function (req, res) {
+        let noPage = -1;
+        res.render('pages/jurgen', {noPage: true})
+    })
+    .get('/jurgen/:docId', async function (req, res) {
+        let docId = req.params.docId;
+        try {
+            const client = await pool.connect();
+            const result = await client.query(`SELECT * FROM non_content_table where doc_id = ${docId}`);
+            let text = fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), {encoding:'utf8', flag:'r'}).split("\n");
+            const results = { 'results': (result) ? result.rows[0] : null, noPage: false, text: text };
+            res.render('pages/jurgen', results);
+            client.release();
+        } catch (err) {
+            console.error(err);
+            res.send("Error " + err);
+        }
+    })
+    .get('/shivangi', (req, res) => res.render('pages/shivangi'))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
-
-/*  HELPER FUNCTIONS BELOW 
- */
+/*  HELPER FUNCTIONS BELOW */
 
 function termSetFromDocId(docId) {
     // Return set of tokens in document with id docId
