@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <meta charset="UTF-8">
-  <head>
-    <title>Online Library Catalog --- Upload</title>
-    <link href="documentUpload.css" rel="stylesheet">
-    <script src="documentUpload.js" defer></script>
-  </head>
-  <body>
-    <form id='submitForm'>
-    <div id="title"><b>Online Library Catalog</b></div>
-    <div id="navigation">
-      <p>
-        <ul>
-          <li><a href="shivangi">Search</a></li>
-          <li><a href="/ryan?query=tag_english&searchtype=tags">Library</a></li>
-          <li>Upload Documents</li>
-        </ul>
-      </p>
-    </div>
-    <div>
-      <p id='metaWarning' class='meta-warning'>Please fill all the information!</p>
-      <p>
-        <div>
-          <label for="textScene">Scene:</label>
-          <input type="text" id="textScene" name="textScene" placeholder="Enter the scene title.">
-        </div>
-        <div>
-          <label for="play">Play:</label>
-          <input type="text" id="play" name="play" placeholder="Enter the play title.">
-        </div>
-      </p>
-    </div>
-    <div>
-      <p id='textWarning' class='text-warning'>Please write your contents!</p>
-      <label for="text">Text:</label>
-      <textarea id="text" name="text"></textarea>
-    </div>
-    <div><button id='submit' type="submit" form="submitForm" value="Submit">Submit</button></div>
-  </form>
-  </body>
+    <head>
+        <link href="yuyang.css" rel="stylesheet">
+        <script src="yuyang.js" defer></script>
+        <meta charset="UTF-8">
+        <title>OLC: Upload Document</title>
+    </head>
+    <body>
+        <form id='submitForm'>
+            <div id="title"><b>Online Library Catalog</b></div>
+            <div id="navigation">
+                <p>
+                    <ul>
+                        <li><a href="shivangi">Search</a></li>
+                        <li><a href="/ryan?query=tag_english&searchtype=tags">Library</a></li>
+                        <li>Upload Documents</li>
+                    </ul>
+                </p>
+            </div>
+            <div>
+                <p id='metaWarning' class='meta-warning'>Please fill all the information!</p>
+                <p>
+                    <div>
+                        <label for="textScene">Scene:</label>
+                        <input type="text" id="textScene" name="textScene" placeholder="Enter the scene title.">
+                    </div>
+                    <div>
+                        <label for="play">Play:</label>
+                        <input type="text" id="play" name="play" placeholder="Enter the play title.">
+                    </div>
+                </p>
+            </div>
+            <div>
+                <p id='textWarning' class='text-warning'>Please write your contents!</p>
+                <label for="text">Text:</label>
+                <textarea id="text" name="text"></textarea>
+            </div>
+            <div><button id='submit' type="submit" form="submitForm" value="Submit">Submit</button></div>
+        </form>
+    </body>
 </html>
