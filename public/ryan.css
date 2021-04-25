@@ -1,9 +1,11 @@
 body {
     width: 1200pt;
 }
+
 header {
     height: 65pt;
 }
+
 #homebutton {
     background-color: lightcoral;
     display: inline-block;
@@ -13,6 +15,7 @@ header {
     color: white;
     border-radius: 5%;
 }
+
 header form {
     width: 54%;
     height: 100%;
@@ -21,24 +24,29 @@ header form {
     align-items: center;
     margin-right: 40%;
 }
+
 form input[type=text] {
     height: 35%;
     width: 60%;
 }
+
 form select {
     height: 42%;
     width: 15%;
 }
+
 form input[type=submit] {
     height: 42%;
     width: 15%;
     background-color: lightcoral;
     color: white;
 }
+
 body > p {
     width: 50%;
     margin-left: 65pt;
 }
+
 @keyframes fadein {
     from {
         opacity: 0;
@@ -47,20 +55,24 @@ body > p {
         opacity: 1;
     }
 }
+
 .result {
     width: 50%;
     margin-left: 65pt;
     animation: 1s linear fadein;
 }
+
 .result .resultscene {
     width: 50%;
     float: left;
 }
+
 .result .resultplay {
     width: 50%;
     float: right;
     text-align: right;
 }
+
 #showmore {
     color: white;
     background-color: lightcoral;
