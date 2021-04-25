@@ -1,4 +1,3 @@
-
 // Fill in query and search type from URL
 let queryParams = new URLSearchParams(window.location.search);
 let queryText = queryParams.get("query");
