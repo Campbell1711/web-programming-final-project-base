@@ -337,7 +337,7 @@ removeRowsWithoutDocs(); // Clear any rows without a corresponding document
 
 function termSetFromDocId(docId) {
     // Return set of tokens in document with id docId
-    return new Set(fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), 'utf8').toString().split(" "));
+    return new Set(fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), 'utf8').toString().toLowerCase().split(" "));
 }
 
 function includeSnippets(result) {
@@ -355,7 +355,7 @@ function includeSnippets(result) {
 
 async function handleContentSearch(req, res) {
     let pos = parseInt(req.query.queryposition); // Position in search results
-    let queryTokens = req.query.query.split(" "); // Split on whitespace
+    let queryTokens = req.query.query.toLowerCase().split(" "); // Split on whitespace
     let lastDocId = 0;
     let returned_rows = [];
     ++pos; // Only consider documents after this position
@@ -400,6 +400,7 @@ async function handleSearchRequest(req, res) {
             } else if (req.query.searchtype === "play") {
                 SQLQueryString = `SELECT * FROM non_content_table WHERE play_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
             } else { // Tags
+                req.query.query = req.query.query.toLowerCase(); // Don't consider case
                 if (validTags.has(req.query.query)) {
                     SQLQueryString = `SELECT * FROM non_content_table WHERE ${req.query.query} OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
                 } else {
