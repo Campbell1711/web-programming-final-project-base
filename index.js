@@ -274,7 +274,7 @@ express()
             let long = text.length > 6019 + 4963 ? "TRUE" : "FALSE";
             let med = !(short || long) ? "TRUE" : "FALSE";
             let sqlCommand = "INSERT INTO non_content_table (doc_id, scene_title, play_title, tag_english, tag_short, tag_med, tag_long) values ";
-            sqlCommand += `(${docId}, '${textScene}', '${play}', TRUE, ${short}, ${med}, ${long})`;
+            sqlCommand += `(${docId}, '${textScene.toLowerCase()}', '${play.toLowerCase()}', TRUE, ${short}, ${med}, ${long})`;
             await client.query(sqlCommand);
             client.release();
             // Write document text and snippet to files
@@ -391,6 +391,7 @@ async function handleSearchRequest(req, res) {
     let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
     if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
         if (req.query.query && req.query.searchtype && validSearchTypes.has(req.query.searchtype)) {
+            req.query.query = req.query.query.toLowerCase(); // Don't consider case
             let SQLQueryString;
             let validQuery = true;
             if (req.query.searchtype === "content") {
@@ -400,7 +401,6 @@ async function handleSearchRequest(req, res) {
             } else if (req.query.searchtype === "play") {
                 SQLQueryString = `SELECT * FROM non_content_table WHERE play_title = '${req.query.query}' OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
             } else { // Tags
-                req.query.query = req.query.query.toLowerCase(); // Don't consider case
                 if (validTags.has(req.query.query)) {
                     SQLQueryString = `SELECT * FROM non_content_table WHERE ${req.query.query} OFFSET ${pos*8} ROWS FETCH FIRST 8 ROW ONLY`;
                 } else {
