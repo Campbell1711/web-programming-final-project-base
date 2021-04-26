@@ -312,9 +312,31 @@ express()
 
 /*  HELPER FUNCTIONS BELOW */
 
+async function removeRowsWithoutDocs() {
+    // Clear any rows without a corresponding document
+    try {
+        const client = await pool.connect();
+        // Get length of table / max document id
+        const result = await client.query("SELECT count(*) FROM non_content_table");
+        let lastDocId = result.rows ? result.rows[0].count : 0;
+        for (let i = 1; i <= lastDocId; ++i) {
+            let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${i}`);
+            if (row) { // Row exists for id
+                if (!fs.existsSync(path.join(__dirname, `documents/full/${i}.txt`))) { // No file for row
+                    await client.query(`DELETE FROM non_content_table WHERE doc_id = ${i}`);
+                    console.log(`Removing row for document with id: ${i}`);
+                }
+            }
+        }
+        client.release();
+    } catch (err) {
+        console.error(err);
+    }
+}
+removeRowsWithoutDocs(); // Clear any rows without a corresponding document
+
 function termSetFromDocId(docId) {
     // Return set of tokens in document with id docId
-    //console.log("yeet5");
     return new Set(fs.readFileSync(path.join(__dirname, `documents/full/${docId}.txt`), 'utf8').toString().split(" "));
 }
 
@@ -346,7 +368,7 @@ async function handleContentSearch(req, res) {
             let docTokens = termSetFromDocId(pos); // Check if document contains all query tokens
             for (let i = 0; i < queryTokens.length; ++i) {
                 if (docTokens.has(queryTokens[i])) {
-                    let row = await client.query(`SELECT * FROM non_content_table where doc_id = ${pos}`);
+                    let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${pos}`);
                     row = row ? row.rows[0] : null;
                     returned_rows.push(row);
                 }
@@ -366,7 +388,6 @@ let validSearchTypes = new Set(["content","scene","play","tags"]);
 let validTags = new Set(["tag_english", "tag_short", "tag_med", "tag_long"]);
 async function handleSearchRequest(req, res) {
     let emptyResults = {'results': []};
-    // TODO, use query, searchtype, and query position to fetch real documents
     let pos = parseInt(req.query.queryposition); // Position in search results (Number of times Show More was pressed)
     if (req.query.queryposition && Number.isInteger(pos)) { // Sends a block of results if possible
         if (req.query.query && req.query.searchtype && validSearchTypes.has(req.query.searchtype)) {
