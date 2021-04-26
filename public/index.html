@@ -1,37 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <link href="homepage.css" rel="stylesheet">
-    <script src="shivangi.js" defer></script>
-    <meta charset="UTF-8">
-    <title>Online Library Catalog</title>
-</head>
-
-<body>
-    <h1>Online Library Catalog</h1>
-    <section class="formsearch">
-        <form id="searchform" action="ryan" method="GET">
-            <input type="text" name="query" id="query" placeholder="Type your search criteria here">
-            <select name="searchtype" id="searchtype">
-            <option value="content">Content</option>
-            <option value="scene">Scene</option>
-            <option value="play">Play</option>
-            <option value="tags">Tags</option>
-        </select>
-            <input type="submit" value="Search">
-        </form>
-    </section>
-
-    <section class="navigatemenu">
-        <h2>Navigate</h2>
-        <div class="nav">
-            <ul><a href="shivangi">Search</a></ul>
-            <ul><a href="/ryan?query=tag_english&searchtype=tags">Library</a></ul>
-            <ul><a href="yuyang">Upload Documents</a></ul>
-        </div>
-    </section>
-
-</body>
-
+    <head>
+        <link href="shivangi.css" rel="stylesheet">
+        <meta charset="UTF-8">
+        <title>Online Library Catalog</title>
+    </head>
+    <body>
+        <h1>Online Library Catalog</h1>
+        <section class="formsearch">
+            <form id="searchform" action="ryan" method="GET">
+                <input type="text" name="query" id="query" placeholder="Type your search criteria here">
+                <select name="searchtype" id="searchtype">
+                <option value="content">Content</option>
+                <option value="scene">Scene</option>
+                <option value="play">Play</option>
+                <option value="tags">Tags</option>
+            </select>
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="navigatemenu">
+            <h2>Navigate</h2>
+            <div class="nav">
+                <ul><a href="shivangi">Search</a></ul>
+                <ul><a href="/ryan?query=tag_english&searchtype=tags">Library</a></ul>
+                <ul><a href="yuyang">Upload Documents</a></ul>
+            </div>
+        </section>
+    </body>
 </html>
