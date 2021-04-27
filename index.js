@@ -316,15 +316,13 @@ async function removeRowsWithoutDocs() {
     try {
         const client = await pool.connect();
         // Get length of table / max document id
-        const result = await client.query("SELECT count(*) FROM non_content_table");
-        let lastDocId = result.rows ? result.rows[0].count : 0;
-        for (let i = 1; i <= lastDocId; ++i) {
-            let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${i}`);
-            if (row && row.rows.length > 0) { // Row exists for id
-                if (!fs.existsSync(path.join(__dirname, `documents/full/${i}.txt`))) { // No file for row
-                    await client.query(`DELETE FROM non_content_table WHERE doc_id = ${i}`);
-                    console.log(`Removing row for document with id: ${i}`);
-                }
+        const result = await client.query("SELECT * FROM non_content_table");
+        let rows = result ? result.rows : [];
+        for (let i = 0; i < rows.length; ++i) {
+            let docId = rows[i].doc_id;
+            if (!fs.existsSync(path.join(__dirname, `documents/full/${docId}.txt`))) { // No file for row
+                await client.query(`DELETE FROM non_content_table WHERE doc_id = ${docId}`);
+                console.log(`Removing row for document with id: ${docId}`);
             }
         }
         client.release();
