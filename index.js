@@ -308,7 +308,7 @@ express()
         }
     })
     .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 /*  HELPER FUNCTIONS BELOW */
 
