@@ -9,7 +9,8 @@ h1 {
 }
 
 form {
-    width: 70%;
+    width: 60%;
+    height: 65pt;
     float: left;
     display: flex;
     align-items: center;
@@ -17,7 +18,7 @@ form {
 }
 
 form input[type=text] {
-    height: 42%;
+    height: 35%;
     width: 60%;
 }
 
