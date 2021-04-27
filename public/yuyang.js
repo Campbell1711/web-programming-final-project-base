@@ -50,4 +50,4 @@ button.addEventListener('click', function (e) {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(`textScene=${inputScene.value}&play=${inputPlay.value}&text=${textInput.value}`);
     }
-})
+});
