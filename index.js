@@ -320,7 +320,7 @@ async function removeRowsWithoutDocs() {
         let lastDocId = result.rows ? result.rows[0].count : 0;
         for (let i = 1; i <= lastDocId; ++i) {
             let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${i}`);
-            if (row) { // Row exists for id
+            if (row && row.rows.length > 0) { // Row exists for id
                 if (!fs.existsSync(path.join(__dirname, `documents/full/${i}.txt`))) { // No file for row
                     await client.query(`DELETE FROM non_content_table WHERE doc_id = ${i}`);
                     console.log(`Removing row for document with id: ${i}`);
