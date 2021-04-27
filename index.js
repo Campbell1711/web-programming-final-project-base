@@ -1,6 +1,6 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+const express = require('express');
+const path = require('path');
+const PORT = process.env.PORT || 5000;
 const { Pool } = require('pg');
 const fs = require('fs')
 const pool = new Pool({
@@ -25,7 +25,7 @@ express()
         const last_name = (req.query.last) ? req.query.last : "";
 
         let entree = "";
-        let sideList = ""
+        let sideList = "";
         let order = "";
         if (req.query.entree) {
             entree = req.query.entree;
@@ -307,7 +307,7 @@ express()
         }
     })
     .get('/shivangi', (req, res) => res.render('pages/shivangi'))
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 /*  HELPER FUNCTIONS BELOW */
 
