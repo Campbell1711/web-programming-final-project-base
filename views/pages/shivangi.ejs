@@ -27,5 +27,27 @@
                 <ul><a href="yuyang">Upload Documents</a></ul>
             </div>
         </section>
+        <div>
+            <h2>Corpus</h2>
+            <p>
+                Most documents are derived from the works of William Shakespeare, made available by
+                <a href="https://openliterature.net/shakespeare/">Open Literature</a> and preprocessed 
+                into JSON format through the CS446 course, taught by David Fisher.
+            </p>
+        </div>
+        <div>
+            <h2>Search Types</h2>
+            <p>
+                <b>Content-based</b> search is done by returning documents that contain all of the query tokens, 
+                splitting the text into tokens using whitespace.
+            </p>
+            <p>
+                <b>Scene-based</b> search will return all documents whose scene title is equal to the query. Most 
+                of these will be of the form play:int.int, but this is not a requirement.
+            </p>
+            <p><b>Play-based</b> search will return all documents whose play title is equal to the query.</p>
+            <p><b>Tag-based</b> search will return all documents who possess the tag given in the query.</p>
+            <p>All search types are case insensitive.</p>
+        </div>
     </body>
 </html>
