@@ -6,6 +6,7 @@ let textInput = document.getElementById('text');
 let textWarning = document.getElementById('textWarning');
 
 let form = document.getElementById('submitForm');
+let button = document.getElementById('submit');
 
 let metaValid = false;
 let textValid = false;
@@ -33,13 +34,19 @@ function checkText() {
     }
 }
 
-form.addEventListener('submit', function (e) {
+button.addEventListener('click', function (e) {
     if (metaValid && textValid) {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener('load', function (e) {
             console.log('success!');
         })
         xhr.open('POST', '/yuyang');
+        xhr.onreadystatechange = function() {
+            
+        }
+        xhr.onreadystatechange = function () {
+            window.location.replace(xhr.responseURL);
+        }
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(`textScene=${inputScene.value}&play=${inputPlay.value}&text=${textInput.value}`);
     }

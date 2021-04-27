@@ -281,8 +281,7 @@ express()
             fs.writeFileSync(path.join(__dirname, `documents/full/${docId}.txt`), text, {encoding:'utf8', flag:'w'});
             let snippet = text.substring(0, Math.min(400, text.length));
             fs.writeFileSync(path.join(__dirname, `documents/snippets/${docId}.txt`), snippet, {encoding:'utf8', flag:'w'});
-            res.send("ok");
-            res.end();
+            res.redirect(308, `/jurgen/${docId}`);
         } else {
             res.send("fail");
             res.end();
