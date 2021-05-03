@@ -363,12 +363,17 @@ async function handleContentSearch(req, res) {
         lastDocId = result.rows ? result.rows[0].count : 0;
         while ((pos <= lastDocId) && (returned_rows.length < 8)) {
             let docTokens = termSetFromDocId(pos); // Check if document contains all query tokens
+            let containsAll = true;
             for (let i = 0; i < queryTokens.length; ++i) {
-                if (docTokens.has(queryTokens[i])) {
-                    let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${pos}`);
-                    row = row ? row.rows[0] : null;
-                    returned_rows.push(row);
+                if (!docTokens.has(queryTokens[i])) {
+                    containsAll = false;
+                    break;
                 }
+            }
+            if (containsAll) {
+                let row = await client.query(`SELECT * FROM non_content_table WHERE doc_id = ${pos}`);
+                row = row ? row.rows[0] : null;
+                returned_rows.push(row);
             }
             ++pos;
         }
